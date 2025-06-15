@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.game-container {
+  width: 100%;
+  background-color: lightblue;
+  height: calc(100vh - 150px);
+  position: relative;
+}
+
+.side-box {
+  width: 100%;
+  background-color: black;
+  color: white;
+  height: 75px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 2rem;
+}
+
+
+.main-buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  gap: 20px;
+  border: none;
+}
+
+.main-buttons > button {
+  padding: 10px;
+}
