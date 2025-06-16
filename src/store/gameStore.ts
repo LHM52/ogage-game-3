@@ -1,18 +1,7 @@
-// src/store/gameStore.ts
 import { create } from 'zustand';
+import type { GameState } from '../@types/types'
 
-interface GameState {
-    isGameStart: boolean;
-    stageCount: number;
-    deathCount: number;
-    volume: number;
-    playBGM: boolean;
-    setIsGameStart: (value: boolean) => void;
-    setStageCount: (count: number) => void;
-    setDeathCount: (count: number) => void;
-    setVolume: (value: number) => void;
-    setPlayBGM: (value: boolean) => void;
-}
+
 
 export const useGameStore = create<GameState>((set) => ({
     isGameStart: false,

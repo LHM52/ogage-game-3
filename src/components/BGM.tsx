@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useGameStore } from "../store/gameStore";
-import bgm from '../assets/bgm.mp3';
+import bgm from '../assets/bgms/bgm.mp3';
 
 export default function BGM() {
     const volume = useGameStore((state) => state.volume);

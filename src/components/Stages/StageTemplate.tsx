@@ -2,8 +2,9 @@ import { useRef, useEffect } from "react";
 import Phaser from "phaser";
 import gameConfig from "../../GameLogics/Gameconfig";
 
+
 interface StageTemplateProps {
-    scene: Phaser.Types.Scenes.SettingsConfig | Phaser.Scene;
+    scene: Phaser.Scene | Phaser.Types.Scenes.SettingsConfig | typeof Phaser.Scene;
     children?: React.ReactNode;
 }
 
@@ -28,7 +29,7 @@ export default function StageTemplate({ scene, children }: StageTemplateProps) {
 
     return (
         <div style={{ width: "100%", height: "calc(100vh - 150px)" }}>
-            <div ref={gameRef}/>
+            <div ref={gameRef} style={{ width: "100%", height: "100%" }} />
             {children}
         </div>
     );
