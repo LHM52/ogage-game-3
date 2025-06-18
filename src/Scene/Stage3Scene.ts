@@ -46,7 +46,7 @@ export class Stage3Scene extends Phaser.Scene {
         const mapOffsetX = 525;
         const mapOffsetY = 100;
 
-        const backgroundLayer = map.createLayer('Layer1', [tileset1, tileset2], mapOffsetX, mapOffsetY);
+        map.createLayer('Layer1', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer2 = map.createLayer('Layer2', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer3 = map.createLayer('Layer3', [tileset1, tileset2], mapOffsetX, mapOffsetY);
 
@@ -91,7 +91,7 @@ export class Stage3Scene extends Phaser.Scene {
         );
     }
 
-    update(time: number, delta: number): void {
+    update(): void {
         this.player.update(this.cursors);
     }
 
@@ -113,7 +113,7 @@ export class Stage3Scene extends Phaser.Scene {
         object2: Phaser.GameObjects.GameObject | Phaser.Tilemaps.Tile | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody
     ) {
         const player = object1 as Player;
-        const enemy = object2 as Enemy;
+        object2 as Enemy;
         console.log('플레이어와 적 충돌!');
         player.die();
         const body = player.body as Phaser.Physics.Arcade.Body;
