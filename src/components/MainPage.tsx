@@ -8,7 +8,7 @@ export function MainPage() {
     const gameStart = () => {
         setIsGameStart(true);
         setPlayBGM(true); // BGM 재생 요청
-        navigate(`stage/1`);
+        navigate(`stage/2`);
     }
     
 

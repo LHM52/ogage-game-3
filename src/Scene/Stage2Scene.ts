@@ -61,15 +61,14 @@ export class Stage2Scene extends Phaser.Scene {
         // ------------------------------
 
 
-
-        const enemy2 = new Enemy(this, 814, 350, 'enemy_image', 'vertical', 700, 150, -1);
-        const enemy1 = new Enemy(this, 747, 350, 'enemy_image', 'vertical', 700, 150, 1);
-        const enemy3 = new Enemy(this, 875, 350, 'enemy_image', 'vertical', 700, 150, 1);
-        const enemy4 = new Enemy(this, 940, 350, 'enemy_image', 'vertical', 700, 150, -1);
-        const enemy5 = new Enemy(this, 1005, 350, 'enemy_image', 'vertical', 700, 150, 1);
-        const enemy6 = new Enemy(this, 1070, 350, 'enemy_image', 'vertical', 700, 150, -1);
-        const enemy7 = new Enemy(this, 1130, 350, 'enemy_image', 'vertical', 700, 150, 1);
-        const enemy8 = new Enemy(this, 1195, 350, 'enemy_image', 'vertical', 700, 150, -1);
+        const enemy1 = new Enemy(this, 747, 350, 'enemy_image', 'vertical', 701, 150, 1);
+        const enemy2 = new Enemy(this, 814, 350, 'enemy_image', 'vertical', 701, 150, -1);
+        const enemy3 = new Enemy(this, 875, 350, 'enemy_image', 'vertical', 701, 150, 1);
+        const enemy4 = new Enemy(this, 940, 350, 'enemy_image', 'vertical', 701, 150, -1);
+        const enemy5 = new Enemy(this, 1005, 350, 'enemy_image', 'vertical', 701, 150, 1);
+        const enemy6 = new Enemy(this, 1070, 350, 'enemy_image', 'vertical', 701, 150, -1);
+        const enemy7 = new Enemy(this, 1130, 350, 'enemy_image', 'vertical', 701, 150, 1);
+        const enemy8 = new Enemy(this, 1195, 350, 'enemy_image', 'vertical', 701, 150, -1);
 
 
 
