@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useRequireGameStart } from "../../hooks/useRequireGameStart";
 import StageTemplate from "./StageTemplate";
 import { useGameStore } from "../../store/gameStore";
-import { playNextSound } from "../../store/soundManager";
 import { useEffect, useState } from "react";
 
 export default function Stage1() { // ⭐ 여기가 Stage1 컴포넌트입니다.
@@ -18,17 +17,12 @@ export default function Stage1() { // ⭐ 여기가 Stage1 컴포넌트입니다
         if (stageCount === 2) {
             setIsCleared(true);
 
-            const soundTimer = setTimeout(() => {
-                playNextSound();
-            }, 1);
-
             const navigateTimer = setTimeout(() => {
                 setIsCleared(false);
                 navigate('/stage/2');
             }, 2000);
 
             return () => {
-                clearTimeout(soundTimer);
                 clearTimeout(navigateTimer);
             };
         }

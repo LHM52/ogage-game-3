@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useRequireGameStart } from "../../hooks/useRequireGameStart";
 import StageTemplate from "./StageTemplate";
 import { useGameStore } from "../../store/gameStore";
-import { playNextSound } from "../../store/soundManager";
 import { useEffect, useState } from "react";
 
 export default function Stage3() { 
@@ -18,9 +17,6 @@ export default function Stage3() {
         if (stageCount === 5) {
             setIsCleared(true);
 
-            const soundTimer = setTimeout(() => {
-                playNextSound();
-            }, 1);
 
             const navigateTimer = setTimeout(() => {
                 setIsCleared(false);
@@ -28,7 +24,6 @@ export default function Stage3() {
             }, 2000);
 
             return () => {
-                clearTimeout(soundTimer);
                 clearTimeout(navigateTimer);
             };
         }

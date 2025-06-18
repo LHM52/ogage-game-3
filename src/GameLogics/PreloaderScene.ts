@@ -40,6 +40,9 @@ export class PreloaderScene extends Phaser.Scene {
         this.load.image('enemy_image', '/assets/objects/enemy.png');
 
         this.load.audio('death_sound', '/assets/sounds/death_sound.mp3');
+        this.load.audio('clear_sound', '/assets/sounds/Next_Level.mp3');
+
+
 
         this.load.on('fileerror', (file: Phaser.Loader.File) => {
             console.error(`PreloaderScene: Failed to load file: ${file.src} (${file.type})`);

@@ -3,6 +3,7 @@ import Enemy from "../GameLogics/Enemy";
 import Phaser from "phaser";
 import { useGameStore } from '../store/gameStore';
 
+
 type TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
 
@@ -107,6 +108,8 @@ export class Stage2Scene extends Phaser.Scene {
         console.log('Tile properties:', tile.properties);
         if (tile.properties && tile.properties.isClearPoint === true) {
             console.log(`Stage2Scene: 클리어 지점 도달! (Zustand로 다음 스테이지 업데이트)`);
+            this.sound.play('clear_sound', { volume: 0.2, loop: false });
+
             this.setStageCount(3);
             (player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
             (player.body as Phaser.Physics.Arcade.Body).setEnable(false);

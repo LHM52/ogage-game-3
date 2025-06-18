@@ -3,6 +3,7 @@ import Enemy from "../GameLogics/Enemy";
 import Phaser from "phaser";
 import { useGameStore } from '../store/gameStore';
 
+
 export class Stage3Scene extends Phaser.Scene {
     player!: Player;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -86,6 +87,8 @@ export class Stage3Scene extends Phaser.Scene {
         const player = object1 as Player;
         const tile = object2 as Phaser.Tilemaps.Tile;
         if (tile.properties && tile.properties.isClearPoint === true) {
+            this.sound.play('clear_sound', { volume: 0.2, loop: false });
+
             this.setStageCount(4);
             (player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
             (player.body as Phaser.Physics.Arcade.Body).setEnable(false);
