@@ -24,7 +24,7 @@ export default function Stage3() {
 
             const navigateTimer = setTimeout(() => {
                 setIsCleared(false);
-                navigate('/stage/3');
+                navigate('/stage/4');
             }, 2000);
 
             return () => {

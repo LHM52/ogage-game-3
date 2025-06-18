@@ -3,9 +3,6 @@ import Enemy from "../GameLogics/enemy";
 import Phaser from "phaser";
 import { useGameStore } from '../store/gameStore';
 
-
-type TilemapLayer = Phaser.Tilemaps.TilemapLayer;
-
 export class Stage3Scene extends Phaser.Scene {
     player!: Player;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -46,7 +43,7 @@ export class Stage3Scene extends Phaser.Scene {
         const mapOffsetX = 525;
         const mapOffsetY = 100;
 
-        map.createLayer('Layer1', [tileset1, tileset2], mapOffsetX, mapOffsetY);
+        const backgroundLayer = map.createLayer('Layer1', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer2 = map.createLayer('Layer2', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer3 = map.createLayer('Layer3', [tileset1, tileset2], mapOffsetX, mapOffsetY);
 
@@ -57,7 +54,7 @@ export class Stage3Scene extends Phaser.Scene {
         }
 
         this.player = new Player(this, 620, 195, 'player');
-        this.enemies = this.physics.add.group({ runChildUpdate: true });
+        this.enemies = this.add.group({ runChildUpdate: true });
 
         const enemy1 = new Enemy(this, 685, 150, 'enemy_image', 'vertical', 200, 50, 1);
         const enemy2 = new Enemy(this, 815, 150, 'enemy_image', 'vertical', 200, 50, 1);
@@ -76,22 +73,15 @@ export class Stage3Scene extends Phaser.Scene {
 
         this.enemies.addMultiple([enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9]);
 
-        this.physics.add.collider(
-            this.player,
-            [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[]
-        );
+        this.physics.add.collider(this.player, [collisionLayer2, collisionLayer3].filter(Boolean));
         this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
 
-        this.physics.add.overlap(
-            this.player,
-            [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[],
-            this.handleClearOverlap,
-            undefined,
-            this
-        );
+        this.physics.add.overlap(this.player, [collisionLayer2, collisionLayer3].filter(Boolean), this.handleClearOverlap, null, this);
+
+        this.cursors = this.input.keyboard!.createCursorKeys();
     }
 
-    update(): void {
+    update(time: number, delta: number): void {
         this.player.update(this.cursors);
     }
 
@@ -113,7 +103,7 @@ export class Stage3Scene extends Phaser.Scene {
         object2: Phaser.GameObjects.GameObject | Phaser.Tilemaps.Tile | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody
     ) {
         const player = object1 as Player;
-        object2 as Enemy;
+        const enemy = object2 as Enemy;
         console.log('플레이어와 적 충돌!');
         player.die();
         const body = player.body as Phaser.Physics.Arcade.Body;
