@@ -5,6 +5,7 @@ import { useGameStore } from '../store/gameStore';
 
 type TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
+
 export class Stage1Scene extends Phaser.Scene {
     player!: Player;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;

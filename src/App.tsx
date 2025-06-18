@@ -8,6 +8,7 @@ import BGM from './components/BGM'
 import Stage2 from './components/Stages/Stage2'
 import Stage3 from './components/Stages/Stage3'
 import Stage4 from './components/Stages/Stage4'
+import AllClear from './components/AllClear'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path='/stage/3' element={<Stage3 />} />
         <Route path='/stage/4' element={<Stage4 />} />
         {/* <Route path='/stage/5' element={<Stage5 />} />  */}
+        <Route path='/AllClear' element={<AllClear/>}></Route>
       </Routes>
 
       <Footer isClear={false} />
