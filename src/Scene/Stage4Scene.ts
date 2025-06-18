@@ -79,7 +79,8 @@ export class Stage4Scene extends Phaser.Scene {
             this.player,
             [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[]
         );
-        this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
+        // collider를 overlap으로 변경
+        this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
 
         this.physics.add.overlap(
             this.player,

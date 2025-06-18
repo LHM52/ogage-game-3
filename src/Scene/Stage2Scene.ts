@@ -57,7 +57,7 @@ export class Stage2Scene extends Phaser.Scene {
         }
 
         this.player = new Player(this, 650, 350, 'player');
-        this.enemies = this.physics.add.group({ runChildUpdate: true }); 
+        this.enemies = this.physics.add.group({ runChildUpdate: true });
         // ------------------------------
 
 
@@ -79,7 +79,8 @@ export class Stage2Scene extends Phaser.Scene {
             this.player,
             [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[]
         );
-        this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
+        this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
+
 
         this.physics.add.overlap(
             this.player,

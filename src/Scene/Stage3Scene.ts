@@ -68,7 +68,8 @@ export class Stage3Scene extends Phaser.Scene {
         const layers = [collisionLayer2, collisionLayer3].filter(Boolean) as Phaser.Tilemaps.TilemapLayer[];
 
         this.physics.add.collider(this.player, layers);
-        this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
+        this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
+
         this.physics.add.overlap(this.player, layers, this.handleClearOverlap, undefined, this);
 
         this.cursors = this.input.keyboard!.createCursorKeys();

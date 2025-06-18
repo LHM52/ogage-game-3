@@ -74,10 +74,10 @@ export class Stage1Scene extends Phaser.Scene {
                 // 혹시라도 비활성화되어 있다면 강제로 활성화
                 if (!body.enable) {
                     body.setEnable(true);
-                    console.warn(`Enemy ${enemy.x},${enemy.y}: Body was disabled, re-enabling.`);
+                    console.warn(`Enemy ${ enemy.x },${ enemy.y }: Body was disabled, re-enabling.`);
                 }
                 // 초기 속도 확인 (디버깅용)
-                console.log(`Enemy ${enemy.x},${enemy.y} (Type: ${enemy.patrolType}) initial velocity: X=${body.velocity.x}, Y=${body.velocity.y}`);
+                console.log(`Enemy ${ enemy.x },${ enemy.y } (Type: ${ enemy.patrolType }) initial velocity: X=${ body.velocity.x }, Y=${ body.velocity.y }`);
             }
         });
 
@@ -89,7 +89,8 @@ export class Stage1Scene extends Phaser.Scene {
             this.player,
             collidableLayers
         );
-        this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
+        this.physics.add.overlap(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
+
 
         this.physics.add.overlap(
             this.player,
