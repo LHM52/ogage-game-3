@@ -12,7 +12,7 @@ export class Stage3Scene extends Phaser.Scene {
     private getDeathCount: () => number;
     private setDeathCount: (count: number) => void;
 
-    constructor() { // 생성자에서 인자를 받지 않습니다.
+    constructor() {
         super({ key: 'Stage3Scene' });
         this.setStageCount = useGameStore.getState().setStageCount;
         this.setDeathCount = useGameStore.getState().setDeathCount;
@@ -22,14 +22,12 @@ export class Stage3Scene extends Phaser.Scene {
     }
 
     preload() {
-        // PreloaderScene에서 모든 자산을 로드했으므로 여기는 비워둡니다.
-
         console.log("Stage3Scene: Preload (assets loaded by PreloaderScene).");
     }
 
     create() {
         console.log("Stage3Scene: Create Started.");
-        console.log("Stage3Scene: Checking if tilemap 'stage1' is loaded:", this.sys.game.cache.tilemap.has('stage3'));
+        console.log("Stage3Scene: Checking if tilemap 'stage3' is loaded:", this.sys.game.cache.tilemap.has('stage3'));
         console.log("Stage3Scene: Checking if texture 'tileset' is loaded:", this.sys.game.textures.exists('tileset'));
 
         const map = this.make.tilemap({ key: 'stage3' });
@@ -43,45 +41,40 @@ export class Stage3Scene extends Phaser.Scene {
         const mapOffsetX = 525;
         const mapOffsetY = 100;
 
-        const backgroundLayer = map.createLayer('Layer1', [tileset1, tileset2], mapOffsetX, mapOffsetY);
+        map.createLayer('Layer1', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer2 = map.createLayer('Layer2', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer3 = map.createLayer('Layer3', [tileset1, tileset2], mapOffsetX, mapOffsetY);
 
         if (collisionLayer2) collisionLayer2.setCollisionByProperty({ collides: true });
         if (collisionLayer3) collisionLayer3.setCollisionByProperty({ collides: true });
-        else {
-            console.warn("Stage2Scene: Collision layer 3 is null, cannot set collision properties.");
-        }
+        else console.warn("Stage3Scene: Collision layer 3 is null, cannot set collision properties.");
 
         this.player = new Player(this, 620, 195, 'player');
         this.enemies = this.physics.add.group({ runChildUpdate: true });
 
-        const enemy1 = new Enemy(this, 685, 150, 'enemy_image', 'vertical', 200, 50, 1);
-        const enemy2 = new Enemy(this, 815, 150, 'enemy_image', 'vertical', 200, 50, 1);
-        const enemy3 = new Enemy(this, 940, 150, 'enemy_image', 'vertical', 200, 50, 1);
-        const enemy4 = new Enemy(this, 1070, 375, 'enemy_image', 'vertical', 700, 250, 1);
-        const enemy5 = new Enemy(this, 1196, 150, 'enemy_image', 'vertical', 200, 50, 1);
-        const enemy6 = new Enemy(this, 1196, 150, 'enemy_image', 'vertical', 200, 50, 1);
-        const enemy7 = new Enemy(this, 1190, 380, 'enemy_image', 'circular-loop', 100, 150, 1, 0.02);
-        const enemy8 = new Enemy(this, 1190, 380, 'enemy_image', 'circular-loop', 100, 150, 1, -0.02);
-        const enemy9 = new Enemy(this, 750, 500, 'enemy_image', 'circular-loop', 100, 120, 1, 0.03);
+        const enemiesArray = [
+            new Enemy(this, 685, 150, 'enemy_image', 'vertical', 200, 50, 1),
+            new Enemy(this, 815, 150, 'enemy_image', 'vertical', 200, 50, 1),
+            new Enemy(this, 940, 150, 'enemy_image', 'vertical', 200, 50, 1),
+            new Enemy(this, 1070, 375, 'enemy_image', 'vertical', 700, 250, 1),
+            new Enemy(this, 1196, 150, 'enemy_image', 'vertical', 200, 50, 1),
+            new Enemy(this, 1196, 150, 'enemy_image', 'vertical', 200, 50, 1),
+            new Enemy(this, 1190, 380, 'enemy_image', 'circular-loop', 100, 150, 1, 0.02),
+            new Enemy(this, 1190, 380, 'enemy_image', 'circular-loop', 100, 150, 1, -0.02),
+            new Enemy(this, 750, 500, 'enemy_image', 'circular-loop', 100, 120, 1, 0.03)
+        ];
+        this.enemies.addMultiple(enemiesArray);
 
+        const layers = [collisionLayer2, collisionLayer3].filter(Boolean) as Phaser.Tilemaps.TilemapLayer[];
 
-
-
-
-
-        this.enemies.addMultiple([enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9]);
-
-        this.physics.add.collider(this.player, [collisionLayer2, collisionLayer3].filter(Boolean));
+        this.physics.add.collider(this.player, layers);
         this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
-
-        this.physics.add.overlap(this.player, [collisionLayer2, collisionLayer3].filter(Boolean), this.handleClearOverlap, null, this);
+        this.physics.add.overlap(this.player, layers, this.handleClearOverlap, undefined, this);
 
         this.cursors = this.input.keyboard!.createCursorKeys();
     }
 
-    update(time: number, delta: number): void {
+    update(): void {
         this.player.update(this.cursors);
     }
 
@@ -103,24 +96,28 @@ export class Stage3Scene extends Phaser.Scene {
         object2: Phaser.GameObjects.GameObject | Phaser.Tilemaps.Tile | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody
     ) {
         const player = object1 as Player;
-        const enemy = object2 as Enemy;
-        console.log('플레이어와 적 충돌!');
+        object2 as Enemy;
         player.die();
         const body = player.body as Phaser.Physics.Arcade.Body;
         body.setVelocity(0, 0);
         body.setEnable(false);
+
         const currentDeathCount = this.getDeathCount();
         this.setDeathCount(currentDeathCount + 1);
-
 
         this.sound.play('death_sound', { volume: 0.2, loop: false });
 
         this.tweens.add({
-            targets: player, alpha: 0, duration: 1000, ease: 'Linear',
+            targets: player,
+            alpha: 0,
+            duration: 1000,
+            ease: 'Linear',
             onComplete: () => {
                 player.setActive(false).setVisible(false);
                 this.time.delayedCall(100, () => {
-                    player.alpha = 1; player.respawn(); body.setEnable(true);
+                    player.alpha = 1;
+                    player.respawn();
+                    body.setEnable(true);
                 }, [], this);
             }
         });
