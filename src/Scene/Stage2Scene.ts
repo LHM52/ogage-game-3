@@ -57,7 +57,8 @@ export class Stage2Scene extends Phaser.Scene {
         }
 
         this.player = new Player(this, 650, 350, 'player');
-        this.enemies = this.add.group({ runChildUpdate: true });
+        this.enemies = this.physics.add.group({ runChildUpdate: true }); // <--- 여기를 변경
+        // ------------------------------
 
 
 

@@ -53,6 +53,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         body.setAllowGravity(false);
         body.setImmovable(true);
 
+        // 초기 속도를 설정합니다.
+        // 이 속도 설정은 update 메서드에서 매 프레임마다 다시 적용될 것입니다.
         switch (patrolType) {
             case "horizontal":
                 this.currentDirection = startDirectionSign === 1 ? "right" : "left";
@@ -73,7 +75,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                 break;
             case "circular-loop":
             case "circular-pingpong":
-                body.moves = false;
+                body.moves = false; // 물리 엔진에 의해 움직이지 않음
                 this.angleRad = 0; // 초기 각도 0으로 시작
                 break;
         }
@@ -85,6 +87,42 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     update() {
         const body = this.body as Phaser.Physics.Arcade.Body;
 
+        // 물리 기반 이동 타입의 경우, 매 프레임마다 속도를 다시 설정하여
+        // 그룹 추가 시 발생할 수 있는 속도 초기화 문제를 방지합니다.
+        if (this.patrolType !== "circular-loop" && this.patrolType !== "circular-pingpong") {
+            // 현재 방향에 따라 속도 재설정
+            let targetVx = 0;
+            let targetVy = 0;
+
+            switch (this.currentDirection) {
+                case "right":
+                    targetVx = this.speed;
+                    break;
+                case "left":
+                    targetVx = -this.speed;
+                    break;
+                case "down":
+                    targetVy = this.speed;
+                    break;
+                case "up":
+                    targetVy = -this.speed;
+                    break;
+                case "down-right":
+                    targetVx = this.speed;
+                    targetVy = this.speed;
+                    break;
+                case "up-left":
+                    targetVx = -this.speed;
+                    targetVy = -this.speed;
+                    break;
+            }
+            // 현재 바디의 속도와 목표 속도가 다를 경우에만 설정하여 불필요한 연산 줄임
+            if (body.velocity.x !== targetVx || body.velocity.y !== targetVy) {
+                body.setVelocity(targetVx, targetVy);
+            }
+        }
+
+
         switch (this.patrolType) {
             case "horizontal":
                 if (
@@ -92,14 +130,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                     this.x >= this.startX + this.patrolDistance
                 ) {
                     this.currentDirection = "left";
-                    body.setVelocityX(-this.speed);
                     this.setFlipX(true);
                 } else if (
                     this.currentDirection === "left" &&
                     this.x <= this.startX - this.patrolDistance
                 ) {
                     this.currentDirection = "right";
-                    body.setVelocityX(this.speed);
                     this.setFlipX(false);
                 }
                 break;
@@ -110,13 +146,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                     this.y >= this.startY + this.patrolDistance
                 ) {
                     this.currentDirection = "up";
-                    body.setVelocityY(-this.speed);
                 } else if (
                     this.currentDirection === "up" &&
                     this.y <= this.startY - this.patrolDistance
                 ) {
                     this.currentDirection = "down";
-                    body.setVelocityY(this.speed);
                 }
                 break;
 
@@ -127,14 +161,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                         this.y >= this.startY + this.patrolDistance)
                 ) {
                     this.currentDirection = "up-left";
-                    body.setVelocity(-this.speed, -this.speed);
                 } else if (
                     this.currentDirection === "up-left" &&
                     (this.x <= this.startX - this.patrolDistance ||
                         this.y <= this.startY - this.patrolDistance)
                 ) {
                     this.currentDirection = "down-right";
-                    body.setVelocity(this.speed, this.speed);
                 }
                 break;
 
@@ -145,14 +177,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                         this.y <= this.startY - this.patrolDistance)
                 ) {
                     this.currentDirection = "down-right";
-                    body.setVelocity(this.speed, this.speed);
                 } else if (
                     this.currentDirection === "down-right" &&
                     (this.x >= this.startX + this.patrolDistance ||
                         this.y >= this.startY + this.patrolDistance)
                 ) {
                     this.currentDirection = "up-left";
-                    body.setVelocity(-this.speed, -this.speed);
                 }
                 break;
 

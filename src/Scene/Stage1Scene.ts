@@ -1,24 +1,20 @@
-// src/Scene/Stage1Scene.ts
-
-
 import Player from "../GameLogics/player";
-import Enemy from "../GameLogics/enemy";
+import Enemy from "../GameLogics/enemy"; // Enemy import 경로가 올바른지 다시 확인하세요.
 import Phaser from "phaser";
 import { useGameStore } from '../store/gameStore';
 
 type TilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
-
 export class Stage1Scene extends Phaser.Scene {
     player!: Player;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-    enemies!: Phaser.Physics.Arcade.Group;
+    enemies!: Phaser.Physics.Arcade.Group; // 물리 그룹으로 선언
 
     private setStageCount: (count: number) => void;
     private getDeathCount: () => number;
     private setDeathCount: (count: number) => void;
 
-    constructor() { // 생성자에서 인자를 받지 않습니다.
+    constructor() {
         super({ key: 'Stage1Scene' });
         this.setStageCount = useGameStore.getState().setStageCount;
         this.setDeathCount = useGameStore.getState().setDeathCount;
@@ -28,8 +24,6 @@ export class Stage1Scene extends Phaser.Scene {
     }
 
     preload() {
-        // PreloaderScene에서 모든 자산을 로드했으므로 여기는 비워둡니다.
-
         console.log("Stage1Scene: Preload (assets loaded by PreloaderScene).");
     }
 
@@ -60,9 +54,9 @@ export class Stage1Scene extends Phaser.Scene {
         }
 
         this.player = new Player(this, 625, 150, 'player');
-        this.enemies = this.add.group({ runChildUpdate: true });
 
-
+        // Physics Group으로 변경
+        this.enemies = this.physics.add.group({ runChildUpdate: true });
 
         const enemy1 = new Enemy(this, 940, 287, 'enemy_image', 'horizontal', 400, 350, 1);
         const enemy2 = new Enemy(this, 940, 350, 'enemy_image', 'horizontal', 400, 350, -1);
@@ -71,17 +65,34 @@ export class Stage1Scene extends Phaser.Scene {
 
         this.enemies.addMultiple([enemy1, enemy2, enemy3, enemy4]);
 
+        // **추가: 모든 적의 물리 바디가 활성화되어 있는지 확인 및 디버깅 로그**
+        this.enemies.children.entries.forEach((enemyChild) => {
+            const enemy = enemyChild as Enemy;
+            const body = enemy.body as Phaser.Physics.Arcade.Body;
+            if (body) {
+                // 혹시라도 비활성화되어 있다면 강제로 활성화
+                if (!body.enable) {
+                    body.setEnable(true);
+                    console.warn(`Enemy ${enemy.x},${enemy.y}: Body was disabled, re-enabling.`);
+                }
+                // 초기 속도 확인 (디버깅용)
+                console.log(`Enemy ${enemy.x},${enemy.y} (Type: ${enemy.patrolType}) initial velocity: X=${body.velocity.x}, Y=${body.velocity.y}`);
+            }
+        });
 
+
+        // 플레이어와 충돌 레이어 필터링
+        const collidableLayers = [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[];
 
         this.physics.add.collider(
             this.player,
-            [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[]
+            collidableLayers
         );
         this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
 
         this.physics.add.overlap(
             this.player,
-            [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[],
+            collidableLayers, // 수정: 필터링된 레이어 사용
             this.handleClearOverlap,
             undefined,
             this
@@ -113,7 +124,7 @@ export class Stage1Scene extends Phaser.Scene {
         object2: Phaser.GameObjects.GameObject | Phaser.Tilemaps.Tile | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody
     ) {
         const player = object1 as Player;
-        object2 as Enemy;
+        object2 as Enemy; // 적 객체는 여기서 사용되지 않지만, 타입 단언은 유지
 
         console.log('플레이어와 적 충돌!');
         player.die();

@@ -54,7 +54,7 @@ export class Stage3Scene extends Phaser.Scene {
         }
 
         this.player = new Player(this, 620, 195, 'player');
-        this.enemies = this.add.group({ runChildUpdate: true });
+        this.enemies = this.physics.add.group({ runChildUpdate: true });
 
         const enemy1 = new Enemy(this, 685, 150, 'enemy_image', 'vertical', 200, 50, 1);
         const enemy2 = new Enemy(this, 815, 150, 'enemy_image', 'vertical', 200, 50, 1);
