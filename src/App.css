@@ -4,11 +4,15 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: #b4b5fe;
+}
+
 .game-container {
   width: 100%;
-  background-color: lightblue;
   height: calc(100vh - 150px);
   position: relative;
+  overflow: hidden;
 }
 
 .side-box {
@@ -29,10 +33,96 @@
   position: absolute;
   left: 50%;
   top: 60%;
+  transform: translateX(-50%);
   gap: 20px;
+  border: none;
+  width: 200px;
+}
+
+.main-buttons>button {
+  padding: 15px 0;
+  font-size: 1.3rem;
+  /* 강렬한 빨강 */
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.m-btn1 {
+  background-color: #ff6358;
+  box-shadow: 0 2px #a93b3b;
+  box-shadow: 0 4px #a93b3b;
+}
+
+.m-btn1:hover {
+  background-color: #bf5858;
+  box-shadow: 0 2px #a93b3b;
+  transform: translateY(2px);
+}
+
+.m-btn1:active {
+  box-shadow: none;
+  transform: translateY(4px);
+  background-color: #ff6358;
+}
+
+.m-btn2 {
+  background-color: #273be9;
+  box-shadow: 0 2px #2132c3;
+  box-shadow: 0 4px #2132c3;
+}
+
+.m-btn2:hover {
+  background-color: #182490;
+  box-shadow: 0 2px #2132c3;
+  transform: translateY(2px);
+}
+
+.m-btn2:active {
+  box-shadow: none;
+  transform: translateY(4px);
+  background-color: #273be9;
+}
+.m-btn3 {
+  background-color: #309f51;
+  box-shadow: 0 2px #206c37;
+  box-shadow: 0 4px #206c37;
+}
+
+.m-btn3:hover {
+  background-color: #3f8054;
+  box-shadow: 0 2px #206c37;
+  transform: translateY(2px);
+}
+
+.m-btn3:active {
+  box-shadow: none;
+  transform: translateY(4px);
+  background-color: #309f51;
+}
+
+.go-main-button {
+  font-size: 1em;
+  color: white;
+  background: none;
   border: none;
 }
 
-.main-buttons > button {
-  padding: 10px;
+.clear-screen {
+  position: fixed;
+  top: 75px;
+  /* Header 높이 */
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: calc(100vh - 150px);
+  /* 전체에서 header + footer 빼기 */
+  background-color: #b4b5fe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
 }

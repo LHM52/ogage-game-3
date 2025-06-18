@@ -2,7 +2,7 @@
 //Footer.tsx
 export interface FooterProps {
     isPlaying: boolean
-    isClear: boolean   
+    isClear: boolean
 }
 
 //StageTemplate.tsx
@@ -23,4 +23,5 @@ export interface GameState {
     setDeathCount: (count: number) => void;
     setVolume: (value: number) => void;
     setPlayBGM: (value: boolean) => void;
+
 }

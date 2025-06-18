@@ -10,14 +10,17 @@ export function MainPage() {
         setPlayBGM(true); // BGM 재생 요청
         navigate(`stage/1`);
     }
+    
+
+    
 
     return (
         <>
             <div className="game-container">
                 <div className='main-buttons'>
-                    <button onClick={gameStart}>게임시작</button>
-                    <button>게임방법</button>
-                    <button>랭킹</button>
+                    <button className='m-btn1' onClick={gameStart}>게임시작</button>
+                    <button className='m-btn2'>게임방법</button>
+                    <button className='m-btn3'>랭킹</button>
                 </div>
             </div>
         </>

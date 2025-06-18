@@ -1,37 +1,34 @@
 import { useEffect, useRef, useState } from 'react'
 import { useGameStore } from '../store/gameStore'
-import type { FooterProps } from '../@types/types'
 
-export default function Footer({ isPlaying, isClear }: FooterProps) {
-    const { isGameStart, volume, setVolume } = useGameStore()
+export default function Footer({ isClear }: { isClear: boolean }) {
+    const isGameStart = useGameStore(state => state.isGameStart);
+    const volume = useGameStore(state => state.volume);
+    const setVolume = useGameStore(state => state.setVolume);
+
     const [playTimer, setPlayTimer] = useState<number>(0)
     const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-    // 게임 시작/종료, 올클리어에 따라 타이머 제어
     useEffect(() => {
-        if (isPlaying && !isClear) {
+        if (isGameStart && !isClear) {
             timerRef.current = setInterval(() => {
                 setPlayTimer(prev => prev + 1)
             }, 1000)
         } else {
             if (timerRef.current) clearInterval(timerRef.current)
-        }
-        if (isClear) {
-            if (timerRef.current) clearInterval(timerRef.current)
+            setPlayTimer(0) // 게임 끝나거나 클리어되면 타이머 초기화 옵션
         }
         return () => {
             if (timerRef.current) clearInterval(timerRef.current)
         }
-    }, [isPlaying, isClear])
+    }, [isGameStart, isClear])
 
-    // 시간 포맷 (mm:ss)
     const formatTime = (sec: number) => {
         const m = String(Math.floor(sec / 60)).padStart(2, '0')
         const s = String(sec % 60).padStart(2, '0')
         return `${m}:${s}`
     }
 
-    // 음량 조절
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setVolume(Number(e.target.value))
     }
