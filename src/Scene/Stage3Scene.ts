@@ -36,6 +36,10 @@ export class Stage3Scene extends Phaser.Scene {
         const tileset1 = map.addTilesetImage('tileset', 'tileset');
         const tileset2 = map.addTilesetImage('tilestoke', 'tilestoke');
 
+        if (!tileset1 || !tileset2) {
+            throw new Error('Tileset not found');
+        }
+
         const mapOffsetX = 525;
         const mapOffsetY = 100;
 

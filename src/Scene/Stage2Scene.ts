@@ -36,6 +36,10 @@ export class Stage2Scene extends Phaser.Scene {
         const tileset1 = map.addTilesetImage('tileset', 'tileset');
         const tileset2 = map.addTilesetImage('tilestoke', 'tilestoke');
 
+        if (!tileset1 || !tileset2) {
+            throw new Error('Tileset not found');
+        }
+
         const mapOffsetX = 525;
         const mapOffsetY = 100;
 
@@ -79,15 +83,15 @@ export class Stage2Scene extends Phaser.Scene {
     }
 
     handleClearOverlap(player: Player, tile: Phaser.Tilemaps.Tile) {
-    console.log('Overlap detected with tile:', tile);
-    console.log('Tile properties:', tile.properties);
-    if (tile.properties && tile.properties.isClearPoint === true) {
-        console.log(`Stage2Scene: 클리어 지점 도달! (Zustand로 다음 스테이지 업데이트)`);
-        this.setStageCount(3); 
-        (player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
-        (player.body as Phaser.Physics.Arcade.Body).setEnable(false);
+        console.log('Overlap detected with tile:', tile);
+        console.log('Tile properties:', tile.properties);
+        if (tile.properties && tile.properties.isClearPoint === true) {
+            console.log(`Stage2Scene: 클리어 지점 도달! (Zustand로 다음 스테이지 업데이트)`);
+            this.setStageCount(3);
+            (player.body as Phaser.Physics.Arcade.Body).setVelocity(0, 0);
+            (player.body as Phaser.Physics.Arcade.Body).setEnable(false);
+        }
     }
-}
 
     handlePlayerEnemyCollision(player: Player, enemy: Enemy) {
         console.log('플레이어와 적 충돌!');

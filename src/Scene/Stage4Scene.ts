@@ -35,6 +35,10 @@ export class Stage4Scene extends Phaser.Scene {
         const map = this.make.tilemap({ key: 'stage4' });
         const tileset1 = map.addTilesetImage('tileset', 'tileset');
         const tileset2 = map.addTilesetImage('tilestoke', 'tilestoke');
+        
+        if (!tileset1 || !tileset2) {
+            throw new Error('Tileset not found');
+        }
 
         const mapOffsetX = 300;
         const mapOffsetY = 150;
@@ -42,6 +46,8 @@ export class Stage4Scene extends Phaser.Scene {
         const backgroundLayer = map.createLayer('Layer1', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer2 = map.createLayer('Layer2', [tileset1, tileset2], mapOffsetX, mapOffsetY);
         const collisionLayer3 = map.createLayer('Layer3', [tileset1, tileset2], mapOffsetX, mapOffsetY);
+
+
 
         if (collisionLayer2) collisionLayer2.setCollisionByProperty({ collides: true });
         if (collisionLayer3) collisionLayer3.setCollisionByProperty({ collides: true });
