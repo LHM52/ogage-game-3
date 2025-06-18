@@ -25,7 +25,7 @@ function App() {
         {/* <Route path='/stage/5' element={<Stage5 />} />  */}
       </Routes>
 
-      <Footer isPlaying={false} isClear={false} />
+      <Footer isClear={false} />
 
     </>
   )

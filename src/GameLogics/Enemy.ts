@@ -16,13 +16,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     angleRad: number;
     angleDirection: 1 | -1;
     angularSpeed: number;
-    currentDirection:
-        | "right"
-        | "left"
-        | "up"
-        | "down"
-        | "down-right"
-        | "up-left";
+    currentDirection!: "right" | "left" | "up" | "down" | "down-right" | "up-left";
     patrolType: PatrolDirection;
 
     // 추가: 풍차 돌 때 초기 각도 오프셋

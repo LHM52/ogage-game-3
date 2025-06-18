@@ -49,15 +49,18 @@ const StageTemplate: React.FC<{ children?: React.ReactNode }> = ({ children }) =
         else if (location.pathname === '/stage/2') nextSceneKey = 'Stage2Scene';
         else if (location.pathname === '/stage/3') nextSceneKey = 'Stage3Scene';
         else if (location.pathname === '/stage/4') nextSceneKey = 'Stage4Scene';
-        
+
 
 
 
         const currentActiveScene = game.scene.scenes.find(s => s.sys.isActive);
         const currentSceneKey = currentActiveScene?.scene.key;
 
+
         if (currentSceneKey !== nextSceneKey && nextSceneKey) {
-            if (currentActiveScene) game.scene.stop(currentSceneKey);
+            if (typeof currentSceneKey === 'string') {
+                game.scene.stop(currentSceneKey);
+            }
             game.scene.start(nextSceneKey);
         }
     }, [location.pathname, isGameLoading]);
