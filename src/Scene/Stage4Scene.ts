@@ -1,5 +1,5 @@
 import Player from "../GameLogics/player";
-import Enemy from "../GameLogics/enemy";
+import Enemy from "../GameLogics/Enemy";
 import Phaser from "phaser";
 import { useGameStore } from '../store/gameStore';
 

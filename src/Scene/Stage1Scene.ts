@@ -1,5 +1,5 @@
 import Player from "../GameLogics/player";
-import Enemy from "../GameLogics/enemy"; // Enemy import 경로가 올바른지 다시 확인하세요.
+import Enemy from "../GameLogics/Enemy"; // Enemy import 경로가 올바른지 다시 확인하세요.
 import Phaser from "phaser";
 import { useGameStore } from '../store/gameStore';
 
