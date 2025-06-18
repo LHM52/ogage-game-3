@@ -60,7 +60,7 @@ export class Stage1Scene extends Phaser.Scene {
         }
 
         this.player = new Player(this, 625, 150, 'player');
-                this.enemies = this.add.group({ runChildUpdate: true });
+        this.enemies = this.add.group({ runChildUpdate: true });
 
 
 
