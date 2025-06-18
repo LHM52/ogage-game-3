@@ -3,6 +3,9 @@ import Enemy from "../GameLogics/enemy";
 import Phaser from "phaser";
 import { useGameStore } from '../store/gameStore';
 
+type TilemapLayer = Phaser.Tilemaps.TilemapLayer;
+
+
 export class Stage4Scene extends Phaser.Scene {
     player!: Player;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -35,7 +38,7 @@ export class Stage4Scene extends Phaser.Scene {
         const map = this.make.tilemap({ key: 'stage4' });
         const tileset1 = map.addTilesetImage('tileset', 'tileset');
         const tileset2 = map.addTilesetImage('tilestoke', 'tilestoke');
-        
+
         if (!tileset1 || !tileset2) {
             throw new Error('Tileset not found');
         }
@@ -56,7 +59,7 @@ export class Stage4Scene extends Phaser.Scene {
         }
 
         this.player = new Player(this, 425, 350, 'player');
-        this.enemies = this.add.group({ runChildUpdate: true });
+        this.enemies = this.physics.add.group({ runChildUpdate: true });
 
         const enemy1 = new Enemy(this, 625, 310, 'enemy_image', 'horizontal', 125, 100, 1);
         const enemy2 = new Enemy(this, 625, 370, 'enemy_image', 'horizontal', 125, 100, 1);
@@ -71,10 +74,19 @@ export class Stage4Scene extends Phaser.Scene {
 
         this.enemies.addMultiple([enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9, enemy10]);
 
-        this.physics.add.collider(this.player, [collisionLayer2, collisionLayer3].filter(Boolean));
+        this.physics.add.collider(
+            this.player,
+            [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[]
+        );
         this.physics.add.collider(this.player, this.enemies, this.handlePlayerEnemyCollision, undefined, this);
 
-        this.physics.add.overlap(this.player, [collisionLayer2, collisionLayer3].filter(Boolean), this.handleClearOverlap, null, this);
+        this.physics.add.overlap(
+            this.player,
+            [collisionLayer2, collisionLayer3].filter(Boolean) as TilemapLayer[],
+            this.handleClearOverlap,
+            undefined,
+            this
+        );
 
         this.cursors = this.input.keyboard!.createCursorKeys();
     }
@@ -83,7 +95,12 @@ export class Stage4Scene extends Phaser.Scene {
         this.player.update(this.cursors);
     }
 
-    handleClearOverlap(player: Player, tile: Phaser.Tilemaps.Tile) {
+    handleClearOverlap(
+        object1: Phaser.GameObjects.GameObject | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody | Phaser.Tilemaps.Tile,
+        object2: Phaser.GameObjects.GameObject | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody | Phaser.Tilemaps.Tile
+    ) {
+        const player = object1 as Player;
+        const tile = object2 as Phaser.Tilemaps.Tile;
         if (tile.properties && tile.properties.isClearPoint === true) {
             console.log(`Stage1Scene: 클리어 지점 도달! (Zustand로 다음 스테이지 업데이트)`);
             this.setStageCount(5); // ⭐ Stage1에서 Stage2로 이동
@@ -92,7 +109,12 @@ export class Stage4Scene extends Phaser.Scene {
         }
     }
 
-    handlePlayerEnemyCollision(player: Player, enemy: Enemy) {
+    handlePlayerEnemyCollision(
+        object1: Phaser.GameObjects.GameObject | Phaser.Tilemaps.Tile | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody,
+        object2: Phaser.GameObjects.GameObject | Phaser.Tilemaps.Tile | Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody
+    ) {
+        const player = object1 as Player;
+        const enemy = object2 as Enemy;
         console.log('플레이어와 적 충돌!');
         player.die();
         const body = player.body as Phaser.Physics.Arcade.Body;
